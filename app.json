@@ -1,0 +1,9 @@
+{
+  "name": "ApmNews",
+  "displayName": "ApmNews",
+  "extra": {
+    "eas": {
+      "projectId": "fbb52515-15ef-408b-b2f5-4c7d8d7e1782"
+    }
+  }
+}
