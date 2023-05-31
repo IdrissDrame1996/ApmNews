@@ -8,7 +8,7 @@ import { AuthContext } from './src/context/AuthContext';
 import {AuthProvider} from './src/context/AuthContext';
 import { SearchContext } from './src/context/SearchContext';
 import { SearchProvider } from './src/context/SearchContext';
-import {Icon} from 'react-native-vector-icons/Ionicons';
+import {Icon} from 'react-native-vector-icons';
 
 
 import HomeScreen from './src/screens/HomeScreen';
@@ -19,16 +19,82 @@ import ArticlesScreen from './src/screens/ArticlesScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SearchBar from "react-native-dynamic-search-bar";
-import { getCustomTabsSupportingBrowsersAsync } from 'expo-web-browser';
+import { useNavigation } from '@react-navigation/native';
+
 
 
 
 function MyStackNavigator() {
 
+  const {userInfo} = useContext(AuthContext);
+
+  const { getNews} = useContext(SearchContext);
+const navigation = useNavigation();
+
   
+const handleDrawerOpen = () => {
+  navigation.openDrawer();
+};
+  const [text, setText] = useState('');
+  const handleKeyPress = (e) => {
+    console.log(e.nativeEvent.key)
+    
+    if (e.nativeEvent.key === '') {
+      console.log('Enter key pressed!');
+      // do something with the text input value
+    }
+  };
   return (
     <Stack.Navigator  >
-      <Stack.Screen name="APMNEWS"  options={{headerShown:false}} component={HomeScreen} />
+      <Stack.Screen name="APMNEWS" options={{
+            headerLeft: () => 
+            (
+              <TouchableOpacity   onPress={handleDrawerOpen}  >
+              <Image  source={require('./src/Hamburger_icon.svg.png')}
+              style={[styles.headerImageH]} onPress={handleDrawerOpen}  />
+              </TouchableOpacity>
+            ),
+            headerTitle : props => (
+              <View style={styles.headerImage}> 
+         
+              <Image
+                source={require('./src/apmnews.png')}
+                style={[styles.headerImage]}
+              />
+        
+                 
+                 </View>
+
+
+            ),
+        
+            
+            
+            headerRight: () => (
+             
+      <SearchBar
+      value={text}
+      placeholder="Rechercher "
+      onChangeText={(newText) => setText(newText)}
+      onKeyPress={handleKeyPress}
+      onSubmitEditing={() => {
+        getNews(userInfo.user_token, "", text,15);
+      }}
+      onPressCancel={() => {
+        this.filterList("");
+      }}
+      onPress={() => getNews(userInfo.user_token, "", text,15)}
+      />
+
+
+
+            ),
+           
+        headerShown: true,
+            drawerItemStyle: { height: 0 },
+            
+           
+          }}  component={HomeScreen} />
 
       <Stack.Screen name="ArticlesScreen" options={{ headerTransparent: false, headerTitle:"", headerStyle:{backgroundColor: "#f2f2f2"} }}    component={ArticlesScreen} />
    
@@ -148,6 +214,7 @@ function MyDrawer() {
 
             ),
            
+            headerShown: false,
         
             drawerItemStyle: { height: 0 },
             
@@ -165,6 +232,12 @@ function MyDrawer() {
             <Drawer.Screen
               name="Login"
               component={LoginScreen} 
+              options={{headerShown: false}}
+            />
+
+            <Drawer.Screen
+              name="ArticlesScreen"
+              component={ArticlesScreen} 
               options={{headerShown: false}}
             />
         
@@ -230,14 +303,23 @@ const Drawer = createDrawerNavigator();
   const styles = StyleSheet.create({
     headerImage: {
       flex: 1,
-      width: 100,
-      height: 100,
+      width: 110,
+      height: 10,
       resizeMode: 'contain',
       justifyContent: 'center',
       alignItems: 'center',
     },
+    headerImageH: {
+      flex: 1,
+      width: 40,
+      height: 20,
+      resizeMode: 'contain',
+      justifyContent: 'center',
+      alignItems: 'center',
+   
+    },
     view: {
-      margin: 5,
+      margin: 1
     },
       
   });

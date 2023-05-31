@@ -1,4 +1,8 @@
 {
   "expoServerPort": null,
-  "packagerPort": 19000
+  "packagerPort": 19000,
+  "expoServerNgrokUrl": "https://qw-hxm.drissdrame.apmnews.exp.direct",
+  "packagerNgrokUrl": "https://qw-hxm.drissdrame.apmnews.exp.direct",
+  "ngrokPid": 7692,
+  "webpackServerPort": null
 }

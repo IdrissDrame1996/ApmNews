@@ -22,7 +22,7 @@ const Article = (props) => {
         const myId = id;
         console.log(myId)
      navigation.navigate('ArticlesScreen', {myId: myId});
-     navigation.setOptions({headerShown: false});
+  
       
       
     }

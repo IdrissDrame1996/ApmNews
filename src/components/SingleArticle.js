@@ -1,5 +1,5 @@
 import React from "react";
-import {View,TouchableOpacity,Pressable,StyleSheet,Text,Button ,Image, useWindowDimensions,ScrollView } from "react-native";
+import {View,TouchableOpacity,Pressable,StyleSheet,Text,Button ,Image, useWindowDimensions,ScrollView, Linking } from "react-native";
 import { StackActions } from '@react-navigation/native';
 
 import UnixDateToFormattedText from "./UnixDateToFormattedText";
@@ -29,18 +29,24 @@ const SingleArticle = (props) => {
         
         a: {
           onPress: (event, href, htmlAttribs) => {
+
+            if (href.startsWith("https://"))
+            {
+                Linking.openURL(href)
+                    console.log("DQSD")
+            }
+            else 
+            {
             event.preventDefault();
             const pattern = /id=([^&]+)/;
+
+            console.log(href + "DQSDQSDQSSQDQSD")
             const match = href.match(pattern);
             const myId = match ? match[1] : null;
             const pushAction = StackActions.push("ArticlesScreen", {myId});
-           
-           // const pushAction = StackActions.push("APMNEWS");
-
-            
             navigation.dispatch(pushAction);
-            //navigation.push('ArticlesScreen', {myId});
             console.log(myId)
+            }
    
           },
         },
